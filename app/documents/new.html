@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dokumen baru — RapiMakalah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/app.css">
+<script src="/vendor/jszip.min.js" defer></script>
+<script src="/js/auth.js" defer></script>
+<script src="/js/store.js" defer></script>
+<script src="/js/docx.js" defer></script>
+<script src="/js/app.js" defer></script>
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" aria-label="Navigasi aplikasi">
+    <a class="sidebar-brand" href="/app/index.html"><span class="brand-mark">R</span> RapiMakalah</a>
+    <nav class="sidebar-nav">
+      <span class="nav-label">Menu</span>
+      <a href="/app/index.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg> Dashboard</a>
+      <a href="/app/documents.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg> Dokumen</a>
+      <a href="/app/documents/new.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Dokumen baru</a>
+      <a href="/app/writing.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 0 1 3 3L8 19z"/></svg> Menulis</a>
+      <a href="/app/templates.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg> Template</a>
+      <span class="nav-label">Akun</span>
+      <a href="/app/settings.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg> Pengaturan</a>
+    </nav>
+    <div class="sidebar-foot">RapiMakalah — clone statis.<br>File diproses di browser Anda.</div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <button class="hamburger" id="hamburger-btn" type="button" aria-label="Buka menu navigasi" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <h1>Dokumen baru</h1>
+      <div class="spacer"></div>
+      <a class="btn btn-outline btn-sm" href="/app/documents.html">Semua dokumen</a>
+      <div class="account-menu">
+        <button class="account-btn" type="button" aria-label="Menu akun" aria-haspopup="true" aria-expanded="false">
+          <span class="avatar" id="account-avatar">R</span>
+          <span class="account-name" id="account-name">Pengguna</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="account-dropdown" id="account-dropdown">
+          <div class="dropdown-mail" id="account-mail"></div>
+          <a href="/app/settings.html">Pengaturan akun</a>
+          <button type="button" id="logout-btn">Keluar</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-content">
+      <div class="page-head">
+        <h2>Dokumen baru</h2>
+        <p>Unggah file .docx untuk dianalisis dan dirapikan, atau tempel teks untuk dibuatkan dokumen baru.</p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Cara membuat dokumen">
+        <button type="button" id="tab-upload" class="active" role="tab" aria-selected="true">Unggah DOCX</button>
+        <button type="button" id="tab-paste" role="tab" aria-selected="false">Tempel teks</button>
+      </div>
+
+      <section id="panel-upload" aria-label="Unggah DOCX">
+        <form id="upload-form" action="#" method="post">
+          <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Pilih file DOCX untuk diunggah">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 20h16"/></svg>
+            <h3>Seret file .docx ke sini</h3>
+            <p>atau pilih dari perangkat Anda</p>
+            <button class="btn btn-primary" type="button" id="choose-file-btn">Pilih file</button>
+            <p style="margin-top:12px">Hanya .docx, maks 20 MB. .doc, PDF, atau file rusak tidak diproses.</p>
+            <input type="file" id="docx-input" accept=".docx" aria-label="Pilih file DOCX">
+          </div>
+        </form>
+
+        <div class="form-alert error" id="upload-error" role="alert"></div>
+
+        <div class="pipeline" id="pipeline" aria-label="Tahapan proses">
+          <div class="pipeline-step" id="pipe-1"><span class="step-name">1 · Validasi</span><span class="step-desc">Periksa struktur .docx</span></div>
+          <div class="pipeline-step" id="pipe-2"><span class="step-name">2 · Analisis</span><span class="step-desc">Temukan penyimpangan format</span></div>
+          <div class="pipeline-step" id="pipe-3"><span class="step-name">3 · Formatting</span><span class="step-desc">Terapkan aturan 4-4-3-3</span></div>
+        </div>
+        <div class="progress" aria-hidden="true"><i id="progress-bar" style="width:0%"></i></div>
+        <p id="pipeline-status" style="font-size:14px;color:var(--ink-soft);margin:10px 0 0">Belum ada file dipilih.</p>
+
+        <section id="analysis-results" hidden aria-label="Hasil analisis">
+          <div class="card" style="margin-top:20px">
+            <div class="card-head"><h3>Hasil analisis — <span id="analysis-filename"></span></h3></div>
+            <p id="analysis-summary" style="color:var(--ink-soft);font-size:14px"></p>
+            <div id="findings-list"></div>
+            <div class="field" style="margin-top:16px">
+              <label for="template-select">Template yang diterapkan</label>
+              <select id="template-select"></select>
+            </div>
+            <button class="btn btn-primary" type="button" id="apply-format-btn">Terapkan format</button>
+          </div>
+        </section>
+
+        <section id="result-card" hidden aria-label="Hasil formatting">
+          <div class="card" style="margin-top:20px">
+            <div class="card-head"><h3>Siap diunduh</h3><span class="stamp stamp-ok">Siap diunduh</span></div>
+            <p style="color:var(--ink-soft);font-size:14px">Format sudah diterapkan ke <b id="result-filename"></b>. File hasil sudah tersimpan di daftar dokumen Anda.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn-primary" type="button" id="download-result-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 20h16"/></svg> Unduh .docx hasil</button>
+              <a class="btn btn-outline" href="/app/documents.html">Lihat di Dokumen</a>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section id="panel-paste" hidden aria-label="Tempel teks">
+        <form id="paste-form" action="#" method="post">
+          <div class="field">
+            <label for="paste-text">Tempel teks makalah Anda</label>
+            <textarea id="paste-text" rows="14" placeholder="# Judul Makalah&#10;&#10;## BAB I PENDAHULUAN&#10;&#10;Isi paragraf pertama makalah.&#10;&#10;1. Poin pertama&#10;- Poin kedua&#10;&#10;---" style="font-family:'Times New Roman',Times,serif;font-size:17px;line-height:1.5;min-height:320px"></textarea>
+            <p class="hint">Penanda yang dikenali: <span class="mono">#</span> = judul, <span class="mono">##</span> = subjudul, <span class="mono">1.</span> atau <span class="mono">-</span> = list, <span class="mono">---</span> = page break. Judul dokumen diambil dari baris pertama teks.</p>
+          </div>
+          <button class="btn btn-primary" type="submit" id="paste-create-btn" disabled>Buat dokumen</button>
+        </form>
+        <div class="form-alert error" id="paste-error" role="alert" style="margin-top:16px"></div>
+      </section>
+
+      <p style="color:var(--ink-soft);font-size:14px;margin-top:24px">Pagination akhir + daftar isi harus di-refresh di Word (klik kanan → Update Field). Privasi: file hanya diproses untuk permintaan Anda, tidak dipakai melatih model; pemrosesan di browser Anda (clone statis — aslinya di server).</p>
+    </main>
+  </div>
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+  var esc = window.RMApp.esc;
+  var MAX_BYTES = 20 * 1024 * 1024;
+  var STAMP_TEXT = { ok: 'Sesuai', warn: 'Perlu diperiksa', bad: 'Tidak sesuai' };
+  var STAMP_CLS = { ok: 'stamp-ok', warn: 'stamp-warn', bad: 'stamp-bad' };
+
+  var state = { buffer: null, fileName: '', docId: null, resultBuffer: null, resultFileName: '', analysis: null };
+
+  var tabUpload = document.getElementById('tab-upload');
+  var tabPaste = document.getElementById('tab-paste');
+  var panelUpload = document.getElementById('panel-upload');
+  var panelPaste = document.getElementById('panel-paste');
+
+  function showTab(which) {
+    var paste = which === 'paste';
+    panelUpload.hidden = paste;
+    panelPaste.hidden = !paste;
+    tabUpload.classList.toggle('active', !paste);
+    tabPaste.classList.toggle('active', paste);
+    tabUpload.setAttribute('aria-selected', paste ? 'false' : 'true');
+    tabPaste.setAttribute('aria-selected', paste ? 'true' : 'false');
+    if (paste) document.getElementById('paste-text').focus();
+  }
+  tabUpload.addEventListener('click', function () { showTab('upload'); });
+  tabPaste.addEventListener('click', function () { showTab('paste'); });
+  if (window.location.hash === '#paste') showTab('paste');
+
+  /* ---- Template select ---- */
+  var tplSelect = document.getElementById('template-select');
+  window.RMStore.listTemplates().forEach(function (t) {
+    var opt = document.createElement('option');
+    opt.value = t.id;
+    opt.textContent = t.name + (t.builtin ? ' (bawaan)' : '');
+    tplSelect.appendChild(opt);
+  });
+  var savedTpl = null;
+  try { savedTpl = sessionStorage.getItem('rm-template-id'); } catch (e) {}
+  if (savedTpl && window.RMStore.getTemplate(savedTpl)) tplSelect.value = savedTpl;
+  else tplSelect.value = 'tpl-makalah';
+
+  /* ---- Pipeline ---- */
+  function setPipe(n, mode) {
+    var el = document.getElementById('pipe-' + n);
+    if (!el) return;
+    el.classList.remove('active', 'done');
+    if (mode) el.classList.add(mode);
+  }
+  function setProgress(pct, statusText) {
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('pipeline-status').textContent = statusText;
+  }
+  function resetPipe() {
+    [1, 2, 3].forEach(function (n) { setPipe(n, null); });
+    setProgress(0, 'Belum ada file dipilih.');
+  }
+
+  function showError(msg) {
+    var el = document.getElementById('upload-error');
+    el.innerHTML = esc(msg);
+    el.classList.add('show');
+  }
+  function hideError() {
+    var el = document.getElementById('upload-error');
+    el.classList.remove('show');
+    el.innerHTML = '';
+  }
+
+  /* ---- Alur unggah DOCX ---- */
+  function baseName(fileName) {
+    return String(fileName || 'dokumen').replace(/\.docx$/i, '');
+  }
+
+  function handleFile(file) {
+    if (!file) return;
+    hideError();
+    document.getElementById('analysis-results').hidden = true;
+    document.getElementById('result-card').hidden = true;
+    resetPipe();
+    state.buffer = null;
+    state.docId = null;
+    state.resultBuffer = null;
+
+    if (!/\.docx$/i.test(file.name)) {
+      showError('Hanya file .docx yang diproses. File .doc lama, PDF, atau format lain tidak bisa dianalisis.');
+      window.RMStore.addDoc({ title: baseName(file.name), fileName: file.name, status: 'gagal', pages: 0, findingsCount: 0 });
+      window.RMStore.logActivity('Unggah gagal (bukan .docx): ' + file.name);
+      return;
+    }
+    if (file.size > MAX_BYTES) {
+      showError('Ukuran file maksimal 20 MB. File Anda ' + window.RMApp.fmtBytes(file.size) + ' — perkecil dulu atau bagi dokumennya.');
+      window.RMStore.addDoc({ title: baseName(file.name), fileName: file.name, status: 'gagal', pages: 0, findingsCount: 0 });
+      window.RMStore.logActivity('Unggah gagal (terlalu besar): ' + file.name);
+      return;
+    }
+
+    setPipe(1, 'active');
+    setProgress(15, 'Membaca file…');
+    file.arrayBuffer().then(function (buf) {
+      state.buffer = buf;
+      state.fileName = file.name;
+      return window.RMDocx.validateDocx(buf);
+    }).then(function (v) {
+      if (!v.ok) {
+        setPipe(1, null);
+        setProgress(0, 'Validasi gagal.');
+        showError('File tidak bisa diproses: ' + v.errors.join(' '));
+        window.RMStore.addDoc({ title: baseName(state.fileName), fileName: state.fileName, status: 'gagal', pages: 0, findingsCount: 0 });
+        window.RMStore.logActivity('Unggah gagal (validasi): ' + state.fileName);
+        return null;
+      }
+      setPipe(1, 'done');
+      setPipe(2, 'active');
+      setProgress(45, 'Menganalisis format dokumen…');
+      return window.RMDocx.parseDocx(state.buffer).then(function (parsed) {
+        return window.RMDocx.analyzeDocx(parsed);
+      });
+    }).then(function (analysis) {
+      if (!analysis) return;
+      state.analysis = analysis;
+      setPipe(2, 'done');
+      setPipe(3, 'active');
+      setProgress(66, 'Analisis selesai — pilih template lalu terapkan format.');
+
+      var doc = window.RMStore.addDoc({
+        title: baseName(state.fileName),
+        fileName: state.fileName,
+        status: 'belum',
+        pages: analysis.pages,
+        findingsCount: analysis.counts.warn + analysis.counts.bad,
+      });
+      state.docId = doc.id;
+      window.RMStore.setBlob(doc.id, 'original', state.buffer);
+      window.RMStore.logActivity('Dokumen diunggah: ' + state.fileName);
+
+      document.getElementById('analysis-filename').textContent = state.fileName;
+      document.getElementById('analysis-summary').textContent =
+        'Sesuai ' + analysis.counts.ok + ' · Perlu diperiksa ' + analysis.counts.warn +
+        ' · Tidak sesuai ' + analysis.counts.bad + ' · Estimasi ' + analysis.pages +
+        ' halaman · ' + analysis.babCount + ' BAB ditemukan.';
+      var list = document.getElementById('findings-list');
+      list.innerHTML = '';
+      analysis.findings.forEach(function (f) {
+        var wrap = document.createElement('div');
+        var sec = document.createElement('div');
+        sec.className = 'finding-section';
+        sec.textContent = f.section;
+        var card = document.createElement('div');
+        card.className = 'finding';
+        card.innerHTML =
+          '<div class="finding-head"><b>' + esc(f.title) + '</b>' +
+          '<span class="stamp ' + STAMP_CLS[f.status] + '">' + STAMP_TEXT[f.status] + '</span></div>' +
+          '<p class="finding-detail">Ditemukan: ' + esc(f.found) + '</p>' +
+          '<p class="finding-detail">Diharapkan: ' + esc(f.expected) + '</p>' +
+          '<p class="finding-detail">' + esc(f.detail || '') + '</p>';
+        wrap.appendChild(sec);
+        wrap.appendChild(card);
+        list.appendChild(wrap);
+      });
+      document.getElementById('analysis-results').hidden = false;
+      document.getElementById('apply-format-btn').disabled = false;
+    }).catch(function (err) {
+      setProgress(0, 'Terjadi kesalahan saat memproses file.');
+      showError('Terjadi kesalahan saat memproses file: ' + (err && err.message ? err.message : 'kesalahan tidak diketahui'));
+    });
+  }
+
+  var input = document.getElementById('docx-input');
+  var dz = document.getElementById('dropzone');
+  document.getElementById('choose-file-btn').addEventListener('click', function (e) {
+    e.stopPropagation();
+    input.click();
+  });
+  dz.addEventListener('click', function (e) {
+    if (e.target === input) return;
+    input.click();
+  });
+  dz.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); }
+  });
+  ['dragenter', 'dragover'].forEach(function (ev) {
+    dz.addEventListener(ev, function (e) { e.preventDefault(); dz.classList.add('drag'); });
+  });
+  ['dragleave', 'drop'].forEach(function (ev) {
+    dz.addEventListener(ev, function (e) { e.preventDefault(); dz.classList.remove('drag'); });
+  });
+  dz.addEventListener('drop', function (e) {
+    var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) handleFile(f);
+  });
+  input.addEventListener('change', function () {
+    if (input.files && input.files[0]) handleFile(input.files[0]);
+    input.value = '';
+  });
+  document.getElementById('upload-form').addEventListener('submit', function (e) { e.preventDefault(); });
+
+  /* ---- Terapkan format ---- */
+  var applyBtn = document.getElementById('apply-format-btn');
+  applyBtn.disabled = true;
+  applyBtn.addEventListener('click', function () {
+    if (!state.buffer || !state.docId) return;
+    applyBtn.disabled = true;
+    setPipe(3, 'active');
+    setProgress(85, 'Menerapkan format 4-4-3-3…');
+    window.RMDocx.applyFormat(state.buffer).then(function (result) {
+      state.resultBuffer = result;
+      state.resultFileName = baseName(state.fileName) + '-rapi.docx';
+      window.RMStore.updateDoc(state.docId, { status: 'siap' });
+      window.RMStore.setBlob(state.docId, 'result', result);
+      window.RMStore.logActivity('Format diterapkan: ' + state.fileName);
+      setPipe(3, 'done');
+      setProgress(100, 'Selesai — dokumen siap diunduh.');
+      document.getElementById('result-filename').textContent = state.resultFileName;
+      document.getElementById('result-card').hidden = false;
+      window.RMToast('Format diterapkan — dokumen siap diunduh');
+      window.RMDocx.download(result, state.resultFileName);
+    }).catch(function (err) {
+      applyBtn.disabled = false;
+      showError('Gagal menerapkan format: ' + (err && err.message ? err.message : 'kesalahan tidak diketahui'));
+    });
+  });
+  document.getElementById('download-result-btn').addEventListener('click', function () {
+    if (state.resultBuffer) window.RMDocx.download(state.resultBuffer, state.resultFileName);
+  });
+
+  /* ---- Alur tempel teks ---- */
+  var pasteText = document.getElementById('paste-text');
+  var pasteBtn = document.getElementById('paste-create-btn');
+  pasteText.addEventListener('input', function () {
+    pasteBtn.disabled = pasteText.value.trim().length === 0;
+  });
+  document.getElementById('paste-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var text = pasteText.value;
+    if (!text.trim()) return;
+    var firstLine = text.split('\n').map(function (l) { return l.trim(); }).filter(Boolean)[0] || 'Dokumen Tanpa Judul';
+    var title = firstLine.replace(/^#+\s*/, '').slice(0, 80) || 'Dokumen Tanpa Judul';
+    var fileName = title.replace(/[\\/:*?"<>|]/g, '') + '.docx';
+    pasteBtn.disabled = true;
+    window.RMDocx.buildDocxFromText(text, { title: title }).then(function (buf) {
+      var blocks = window.RMDocx.textToBlocks(text).map(function (b) { return { text: b.text || '' }; });
+      var doc = window.RMStore.addDoc({
+        title: title, fileName: fileName, status: 'siap',
+        pages: window.RMDocx.estimatePages(blocks), findingsCount: 0,
+      });
+      window.RMStore.setBlob(doc.id, 'result', buf);
+      window.RMStore.logActivity('Dokumen dibuat dari teks: ' + title);
+      window.RMDocx.download(buf, fileName);
+      window.RMToast('Dokumen dibuat dan diunduh');
+      pasteBtn.disabled = false;
+    }).catch(function (err) {
+      var el = document.getElementById('paste-error');
+      el.textContent = 'Gagal membuat dokumen: ' + (err && err.message ? err.message : 'kesalahan tidak diketahui');
+      el.classList.add('show');
+      pasteBtn.disabled = false;
+    });
+  });
+});
+</script>
+</body>
+</html>

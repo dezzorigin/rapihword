@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RapiMakalah — Rapikan Format Makalah &amp; Skripsi DOCX Otomatis</title>
+  <meta name="description" content="RapiMakalah merapikan format makalah dan skripsi Word (.docx) secara otomatis: margin 4-4-3-3, Times New Roman 12, spasi 1,5, heading BAB, penomoran halaman Romawi/Arab, daftar isi, daftar pustaka, dan cover. Cek format sebelum dikumpulkan.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="RapiMakalah">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:url" content="https://rapimakalah.pages.dev/">
+  <meta property="og:title" content="RapiMakalah — Rapikan Format Makalah &amp; Skripsi DOCX Otomatis">
+  <meta property="og:description" content="RapiMakalah merapikan format makalah dan skripsi Word (.docx) secara otomatis: margin 4-4-3-3, Times New Roman 12, spasi 1,5, heading BAB, penomoran halaman Romawi/Arab, daftar isi, daftar pustaka, dan cover. Cek format sebelum dikumpulkan.">
+  <meta property="og:image" content="https://rapimakalah.pages.dev/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="RapiMakalah — Rapikan Format Makalah &amp; Skripsi DOCX Otomatis">
+  <meta name="twitter:description" content="RapiMakalah merapikan format makalah dan skripsi Word (.docx) secara otomatis: margin 4-4-3-3, Times New Roman 12, spasi 1,5, heading BAB, penomoran halaman Romawi/Arab, daftar isi, daftar pustaka, dan cover. Cek format sebelum dikumpulkan.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* Kartu panduan adalah <button>: judul + ringkasan sebagai span. */
+    .guide-toggle { width: 100%; text-align: left; font-family: inherit; padding: 24px; }
+    .guide-toggle .guide-title { display: block; font-size: 19px; font-weight: 700; line-height: 1.2; margin-bottom: 6px; }
+    .guide-toggle .guide-summary { display: block; color: var(--ink-soft); font-size: 14px; margin: 10px 0 0; line-height: 1.6; }
+    .guide-toggle .guide-more { display: block; margin-top: 12px; font-size: 13px; font-weight: 600; color: var(--brand); }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span>RapiMakalah</span>
+      </a>
+      <nav class="topnav" aria-label="Navigasi utama">
+        <a href="#masalah">Masalah</a>
+        <a href="#fitur">Fitur</a>
+        <a href="#alur">Alur</a>
+        <a href="#panduan">Panduan</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="topbar-actions">
+        <a class="btn btn-ghost btn-sm" href="/login.html">Masuk</a>
+        <a class="btn btn-primary btn-sm" href="/register.html">Mulai Gratis</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div>
+          <p class="hero-badge"><span class="dot" aria-hidden="true"></span>Pemrosesan DOCX nyata — bukan mockup</p>
+          <h1 id="hero-title">Rapikan format makalah tanpa mengorbankan isinya.</h1>
+          <p class="lede">RapiMakalah memeriksa dan merapikan dokumen Word akademik sesuai pedoman format. Margin, font, spasi, heading, penomoran halaman, dan daftar isi — langsung di file DOCX Anda.</p>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="/register.html">Mulai Gratis</a>
+            <a class="btn btn-outline" href="#alur">Lihat Cara Kerja</a>
+          </div>
+          <div class="hero-notes">
+            <span class="chip">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Maks. 20 MB
+            </span>
+            <span class="chip">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              File tidak untuk training AI
+            </span>
+            <span class="chip">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Tetap editable di Word
+            </span>
+          </div>
+        </div>
+        <div class="doc-preview" aria-label="Contoh pratinjau dokumen yang diperiksa">
+          <div class="doc-preview-bar">
+            <span class="traffic" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span>rapimakalah.app/app/documents/makalah-sistem-informasi</span>
+          </div>
+          <div class="doc-preview-body">
+            <p class="doc-kicker">Dokumen · Makalah</p>
+            <p class="doc-title">ANALISIS SISTEM INFORMASI AKADEMIK</p>
+            <p class="doc-bab">BAB I</p>
+            <p class="doc-bab-sub">PENDAHULUAN</p>
+            <span class="finding-chip"><b>Spasi baris 1,0</b><span class="arrow" aria-hidden="true">&rarr;</span> seharusnya 1,5</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Masalah -->
+    <section class="section" id="masalah" aria-labelledby="masalah-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Masalah</span>
+          <h2 id="masalah-title">Format yang berantakan itu bukan salah tulisan Anda.</h2>
+        </div>
+        <div class="problems">
+          <article class="problem">
+            <span class="problem-num" aria-hidden="true">01</span>
+            <div>
+              <h3>Margin &amp; font berubah-ubah</h3>
+              <p>Setiap bab punya spasi dan jenis huruf yang berbeda.</p>
+            </div>
+          </article>
+          <article class="problem">
+            <span class="problem-num" aria-hidden="true">02</span>
+            <div>
+              <h3>Nomor halaman kacau</h3>
+              <p>Romawi di awal, Arab di isi, cover malah ikut bernomor.</p>
+            </div>
+          </article>
+          <article class="problem">
+            <span class="problem-num" aria-hidden="true">03</span>
+            <div>
+              <h3>Daftar isi manual</h3>
+              <p>Nomor halaman harus diperbarui satu per satu setiap revisi.</p>
+            </div>
+          </article>
+          <article class="problem">
+            <span class="problem-num" aria-hidden="true">04</span>
+            <div>
+              <h3>Pedoman tiap kampus beda</h3>
+              <p>Template generik tidak cukup untuk pedoman dosen Anda.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fitur inti -->
+    <section class="section" id="fitur" aria-labelledby="fitur-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Fitur inti</span>
+          <h2 id="fitur-title">Yang dikerjakan RapiMakalah di dalam file Anda.</h2>
+        </div>
+        <div class="features">
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
+            </div>
+            <h3>Mengedit DOCX asli, bukan membangun ulang</h3>
+            <p>RapiMakalah memodifikasi OOXML di dalam file Word. Tabel, gambar, hyperlink, catatan kaki, dan isi tulisan tetap di tempatnya.</p>
+            <ul>
+              <li>Format diterapkan pada run &amp; paragraf</li>
+              <li>File asli selalu disimpan</li>
+              <li>Hasil bisa dibuka dan diedit di Word</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </div>
+            <h3>Pemeriksa yang menjelaskan, bukan menghakimi</h3>
+            <p>Setiap temuan menyebut paragraf, nilai yang ditemukan, nilai yang diharapkan, dan rekomendasi perbaikannya.</p>
+            <ul>
+              <li>Konsistensi font &amp; ukuran teks</li>
+              <li>Margin, spasi, indentasi, perataan</li>
+              <li>Heading, halaman kosong, keterangan gambar</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <h3>Section Word untuk penomoran halaman</h3>
+            <p>Cover tanpa nomor, bagian awal Romawi, bagian isi Arab — dibuat sebagai section break dan field PAGE yang nyata.</p>
+            <ul>
+              <li>Posisi nomor bawah/tengah/kanan</li>
+              <li>Restart nomor di bagian isi</li>
+              <li>Dapat diperiksa di Word</li>
+            </ul>
+          </article>
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+            </div>
+            <h3>Daftar isi berupa field TOC</h3>
+            <p>Heading dideteksi dari style, outline level, dan pola &ldquo;BAB&rdquo;. RapiMakalah menyisipkan field TOC yang bisa diperbarui di Word.</p>
+            <ul>
+              <li>Kedalaman heading dapat diatur</li>
+              <li>Memberi tahu jika heading tidak ditemukan</li>
+              <li>Tidak menjanjikan pagination palsu</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Alur kerja -->
+    <section class="section" id="alur" aria-labelledby="alur-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Alur kerja</span>
+          <h2 id="alur-title">Dari DOCX berantakan ke dokumen siap dikumpulkan.</h2>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <span class="step-num">01</span>
+            <h3>Unggah DOCX</h3>
+            <p>Validasi ekstensi, MIME, signature file, dan struktur OOXML.</p>
+          </article>
+          <article class="step">
+            <span class="step-num">02</span>
+            <h3>Pilih pedoman</h3>
+            <p>Gunakan template bawaan atau buat konfigurasi kampus sendiri.</p>
+          </article>
+          <article class="step">
+            <span class="step-num">03</span>
+            <h3>Periksa temuan</h3>
+            <p>Lihat status Sesuai, Perlu diperiksa, dan Tidak sesuai beserta alasannya.</p>
+          </article>
+          <article class="step">
+            <span class="step-num">04</span>
+            <h3>Rapikan &amp; unduh</h3>
+            <p>Terapkan aturan yang dipilih, bandingkan, lalu unduh DOCX yang siap diedit.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Template -->
+    <section class="section" id="template" aria-labelledby="template-title">
+      <div class="container split">
+        <div>
+          <span class="eyebrow">Template</span>
+          <h2 id="template-title">Mulai dari pedoman yang sudah benar.</h2>
+          <p class="lede">Gunakan template bawaan sebagai titik awal. Setiap properti — kertas, margin, font, spasi, indentasi, heading, penomoran, dan daftar isi — dapat diubah dan disimpan sebagai template kustom.</p>
+        </div>
+        <article class="card template-card">
+          <h3>Makalah</h3>
+          <div class="template-meta">
+            <span class="chip">A4</span>
+            <span class="chip">Margin 4-4-3-3 cm</span>
+            <span class="chip">Times New Roman 12 pt</span>
+            <span class="chip">Spasi 1,5</span>
+            <span class="chip">Penomoran Romawi &rarr; Arab</span>
+          </div>
+          <div class="template-actions">
+            <a class="btn btn-primary btn-sm" href="/app/templates.html">Lihat template</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Batasan -->
+    <section class="section" id="batasan" aria-labelledby="batasan-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Batasan</span>
+          <h2 id="batasan-title">RapiMakalah tidak berpura-pura menjadi Microsoft Word.</h2>
+        </div>
+        <ul class="check-list">
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span>Preview adalah render struktural, bukan mesin layout Word. Pagination dan nomor halaman TOC bersifat estimasi sampai Word memperbarui field-nya. Tabel kompleks, text box, dan shape ditampilkan sederhana.</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span><b>Format DOCX diubah langsung di OOXML.</b></span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span><b>Field TOC dan PAGE dibuat nyata.</b></span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span><b>File asli disimpan untuk pembatalan.</b></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Keamanan & privasi -->
+    <section class="section" id="keamanan" aria-labelledby="keamanan-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Keamanan &amp; privasi</span>
+          <h2 id="keamanan-title">Dokumen Anda bukan bahan bakar model AI.</h2>
+          <p class="lede">RapiMakalah menyimpan file hanya untuk kebutuhan pemrosesan dan riwayat Anda. Tidak ada penggunaan isi dokumen untuk pelatihan, tidak ada URL penyimpanan yang diekspos.</p>
+        </div>
+        <div class="features">
+          <article class="feature">
+            <h3>Validasi file sebenarnya</h3>
+            <p>Signature ZIP, struktur OOXML, dan guard dekompresi — bukan hanya ekstensi.</p>
+          </article>
+          <article class="feature">
+            <h3>Kepemilikan ketat</h3>
+            <p>Setiap endpoint memeriksa pemilik dokumen. File disimpan dengan nama UUID internal.</p>
+          </article>
+          <article class="feature">
+            <h3>Hapus kapan saja</h3>
+            <p>Hapus dokumen dari riwayat beserta file asli dan hasil pemrosesannya.</p>
+          </article>
+          <article class="feature">
+            <h3>Tanpa data palsu</h3>
+            <p>Fitur yang belum akurat dijelaskan batasannya. Tidak ada formatting dekoratif.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panduan -->
+    <section class="section" id="panduan" aria-labelledby="panduan-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Panduan</span>
+          <h2 id="panduan-title">Pelajari aturannya, bukan cuma hasil akhirnya.</h2>
+        </div>
+        <div class="guides">
+          <button type="button" class="guide guide-toggle" aria-expanded="false">
+            <span class="guide-tag">Format halaman</span>
+            <span class="guide-title">Margin Makalah 4-4-3-3: Arti, Cara Mengatur di Word, dan Kesalahan Umum</span>
+            <span class="guide-summary" hidden>Margin makalah 4-4-3-3 artinya atas 4 cm, kiri 4 cm, bawah 3 cm, kanan 3 cm. Di Word: Layout &rarr; Margins &rarr; Custom Margins. Kesalahan umum: mengira urutannya atas-bawah-kiri-kanan, atau memakai margin default Word 2,54 cm.</span>
+            <span class="guide-more">Baca ringkasan</span>
+          </button>
+          <button type="button" class="guide guide-toggle" aria-expanded="false">
+            <span class="guide-tag">Daftar pustaka</span>
+            <span class="guide-title">Format Daftar Pustaka: Tanpa Nomor, Menggantung, dan Urut Abjad</span>
+            <span class="guide-summary" hidden>Daftar pustaka tanpa nomor urut, indentasi menggantung 1,27 cm, urutan abjad berdasarkan nama penulis, spasi 1,5.</span>
+            <span class="guide-more">Baca ringkasan</span>
+          </button>
+          <button type="button" class="guide guide-toggle" aria-expanded="false">
+            <span class="guide-tag">Penomoran halaman</span>
+            <span class="guide-title">Penomoran Halaman Makalah: Romawi untuk Awal, Arab untuk Isi</span>
+            <span class="guide-summary" hidden>Cover tanpa nomor, bagian awal memakai angka Romawi kecil (i, ii, iii), bagian isi memakai angka Arab mulai 1, dipisah dengan section break di Word.</span>
+            <span class="guide-more">Baca ringkasan</span>
+          </button>
+          <button type="button" class="guide guide-toggle" aria-expanded="false">
+            <span class="guide-tag">Struktur dokumen</span>
+            <span class="guide-title">Struktur Makalah yang Rapi: Urutan Bagian, Heading, dan Sub-bab</span>
+            <span class="guide-summary" hidden>Urutan bagian makalah dari cover sampai lampiran, aturan heading BAB dan sub-bab, label A/B/C, spasi, indentasi, serta daftar isi otomatis di Word.</span>
+            <span class="guide-more">Baca ringkasan</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">FAQ</span>
+          <h2 id="faq-title">Pertanyaan yang sering ditanyakan.</h2>
+        </div>
+        <div class="faq">
+          <div class="faq-item">
+            <button type="button" class="faq-q" aria-expanded="false">
+              <span>Apakah file saya dipakai untuk melatih AI?</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </button>
+            <div class="faq-a">Tidak. Dokumen Anda hanya disimpan untuk kebutuhan pemrosesan dan riwayat Anda sendiri. Isi dokumen tidak digunakan untuk melatih model AI.</div>
+          </div>
+          <div class="faq-item">
+            <button type="button" class="faq-q" aria-expanded="false">
+              <span>Apakah hasil formatnya bisa dibuka di Microsoft Word?</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </button>
+            <div class="faq-a">Ya. Hasilnya tetap file DOCX asli — format diterapkan langsung di OOXML — sehingga bisa dibuka dan diedit seperti biasa di Microsoft Word.</div>
+          </div>
+          <div class="faq-item">
+            <button type="button" class="faq-q" aria-expanded="false">
+              <span>File apa saja yang bisa diproses?</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </button>
+            <div class="faq-a">Hanya file .docx, maksimal 20 MB. File .doc, PDF, atau file yang rusak tidak diproses — sistem memvalidasi ekstensi, MIME, signature file, dan struktur OOXML sebelum memproses.</div>
+          </div>
+          <div class="faq-item">
+            <button type="button" class="faq-q" aria-expanded="false">
+              <span>Apakah daftar isi dan nomor halaman langsung benar?</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </button>
+            <div class="faq-a">Daftar isi dan nomor halaman dibuat sebagai field TOC dan PAGE yang nyata, tetapi pagination dan nomor halaman TOC bersifat estimasi sampai Word memperbarui field-nya. Perbarui field di Word (klik kanan &rarr; Update Field) untuk angka final.</div>
+          </div>
+          <div class="faq-item">
+            <button type="button" class="faq-q" aria-expanded="false">
+              <span>Apakah layanan ini gratis?</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              </span>
+            </button>
+            <div class="faq-a">Ya, gratis tanpa kartu kredit. Buat akun dan unggah DOCX pertama Anda.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA akhir -->
+    <section class="section" aria-labelledby="cta-title">
+      <div class="container">
+        <div class="cta-final">
+          <h2 id="cta-title">Siap merapikan dokumen pertama?</h2>
+          <p>Unggah DOCX, pilih template, dan lihat temuannya dalam satu workspace.</p>
+          <a class="btn btn-primary" href="/register.html">Buat akun gratis</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">R</span>
+          <span>RapiMakalah</span>
+        </a>
+        <nav class="footer-links" aria-label="Tautan footer">
+          <a href="/login.html">Masuk</a>
+          <a href="/register.html">Daftar</a>
+          <a href="/app/templates.html">Template</a>
+          <a href="#panduan">Panduan</a>
+        </nav>
+      </div>
+      <p class="footer-note">Clone statis untuk keperluan demo — bukan situs resmi rapimakalah.my.id. Data tersimpan lokal di browser Anda.</p>
+    </div>
+  </footer>
+
+  <!-- Popup WhatsApp -->
+  <button type="button" class="wa-float" aria-label="Buka chat WhatsApp" aria-expanded="false">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 1.9a8.1 8.1 0 1 1-4.1 15.2l-.3-.2-3 .8.8-2.9-.2-.3A8.1 8.1 0 0 1 12 3.9zm-3.6 4.6c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.9 4.5 3.9 2.2.8 2.7.7 3.1.6.4-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1-.1-.1-.3-.2-.6-.3l-1.9-.9c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6l.5-.6c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.1c-.2-.5-.4-.5-.7-.5z"/></svg>
+  </button>
+  <div class="wa-popup" role="dialog" aria-label="Chat WhatsApp">
+    <h3>Chat dengan RapiMakalah</h3>
+    <p>Butuh bantuan? Kirim pesan, kami balas secepatnya.</p>
+    <p><b>Nomor contoh demo:</b> +62 812-3456-7890 — ini nomor contoh, bukan nomor resmi.</p>
+    <div class="wa-actions">
+      <button type="button" class="btn btn-outline btn-sm wa-dismiss">Nanti saja</button>
+      <a class="btn btn-primary btn-sm" href="https://wa.me/6281234567890" target="_blank" rel="noopener">Chat WhatsApp</a>
+    </div>
+  </div>
+
+  <script src="/js/toast.js"></script>
+  <script src="/js/landing.js"></script>
+</body>
+</html>

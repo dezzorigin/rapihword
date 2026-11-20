@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dokumen — RapiMakalah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/app.css">
+<script src="/vendor/jszip.min.js" defer></script>
+<script src="/js/auth.js" defer></script>
+<script src="/js/store.js" defer></script>
+<script src="/js/docx.js" defer></script>
+<script src="/js/app.js" defer></script>
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" aria-label="Navigasi aplikasi">
+    <a class="sidebar-brand" href="/app/index.html"><span class="brand-mark">R</span> RapiMakalah</a>
+    <nav class="sidebar-nav">
+      <span class="nav-label">Menu</span>
+      <a href="/app/index.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg> Dashboard</a>
+      <a href="/app/documents.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg> Dokumen</a>
+      <a href="/app/documents/new.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Dokumen baru</a>
+      <a href="/app/writing.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 0 1 3 3L8 19z"/></svg> Menulis</a>
+      <a href="/app/templates.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg> Template</a>
+      <span class="nav-label">Akun</span>
+      <a href="/app/settings.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg> Pengaturan</a>
+    </nav>
+    <div class="sidebar-foot">RapiMakalah — clone statis.<br>File diproses di browser Anda.</div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <button class="hamburger" id="hamburger-btn" type="button" aria-label="Buka menu navigasi" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <h1>Dokumen</h1>
+      <div class="spacer"></div>
+      <a class="btn btn-primary btn-sm" href="/app/documents/new.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 20h16"/></svg> Upload dokumen</a>
+      <div class="account-menu">
+        <button class="account-btn" type="button" aria-label="Menu akun" aria-haspopup="true" aria-expanded="false">
+          <span class="avatar" id="account-avatar">R</span>
+          <span class="account-name" id="account-name">Pengguna</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="account-dropdown" id="account-dropdown">
+          <div class="dropdown-mail" id="account-mail"></div>
+          <a href="/app/settings.html">Pengaturan akun</a>
+          <button type="button" id="logout-btn">Keluar</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-content">
+      <div class="page-head">
+        <h2>Dokumen</h2>
+        <p>Semua dokumen yang pernah Anda unggah dan rapikan.</p>
+      </div>
+
+      <div class="toolbar">
+        <div class="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <label for="doc-search" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Cari judul atau nama file</label>
+          <input type="search" id="doc-search" placeholder="Cari judul atau nama file" autocomplete="off">
+        </div>
+        <button class="btn btn-outline btn-sm" type="button" id="reload-btn">Muat ulang</button>
+      </div>
+      <div class="filter-chips" role="group" aria-label="Filter status dokumen" style="margin-bottom:16px">
+        <button class="filter-chip active" type="button" data-filter="semua">Semua</button>
+        <button class="filter-chip" type="button" data-filter="belum">Belum diproses</button>
+        <button class="filter-chip" type="button" data-filter="siap">Siap diunduh</button>
+        <button class="filter-chip" type="button" data-filter="gagal">Gagal</button>
+      </div>
+
+      <section class="card" aria-label="Daftar dokumen">
+        <ul class="doc-list" id="doc-list"></ul>
+        <div class="empty-state" id="docs-empty" hidden>
+          <div class="empty-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg></div>
+          <h3>Belum ada dokumen</h3>
+          <p>Unggah file .docx pertama Anda untuk mulai merapikan format.</p>
+          <a class="btn btn-primary" href="/app/documents/new.html">Unggah dokumen pertama Anda</a>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+  var esc = window.RMApp.esc;
+  var query = '';
+  var filter = 'semua';
+  var listEl = document.getElementById('doc-list');
+  var emptyEl = document.getElementById('docs-empty');
+
+  function render() {
+    var docs = window.RMStore.listDocs();
+    var q = query.trim().toLowerCase();
+    var shown = docs.filter(function (d) {
+      if (filter !== 'semua' && d.status !== filter) return false;
+      if (q) {
+        var hay = ((d.title || '') + ' ' + (d.fileName || '')).toLowerCase();
+        if (hay.indexOf(q) < 0) return false;
+      }
+      return true;
+    });
+    listEl.innerHTML = '';
+    emptyEl.hidden = shown.length > 0;
+    shown.forEach(function (d) {
+      var li = document.createElement('li');
+      var hasResult = !!window.RMStore.getBlob(d.id, 'result');
+      var info = [];
+      if (d.pages) info.push(d.pages + ' halaman');
+      if (d.findingsCount != null) info.push(d.findingsCount + ' temuan');
+      info.push(window.RMStore.fmtDate(d.createdAt));
+      li.innerHTML =
+        '<span class="doc-icon" aria-hidden="true">DOCX</span>' +
+        '<span class="doc-meta"><span class="doc-title">' + esc(d.title || d.fileName) + '</span>' +
+        '<span class="doc-sub">' + esc(d.fileName || '') + ' · ' + esc(info.join(' · ')) + '</span></span>' +
+        window.RMApp.stampHtml(d.status);
+      var actions = document.createElement('span');
+      actions.style.display = 'flex';
+      actions.style.gap = '8px';
+      actions.style.flex = 'none';
+
+      var dl = document.createElement('button');
+      dl.type = 'button';
+      dl.className = 'btn btn-outline btn-sm';
+      dl.textContent = 'Unduh';
+      dl.setAttribute('aria-label', 'Unduh ' + (d.fileName || 'dokumen'));
+      if (!hasResult) {
+        dl.disabled = true;
+        dl.title = 'Hasil hanya tersedia di tab tempat dokumen diproses — unduh ulang dari workspace';
+      } else {
+        dl.addEventListener('click', function () {
+          window.RMDocx.download(window.RMStore.getBlob(d.id, 'result'), d.fileName || 'dokumen-rapi.docx');
+        });
+      }
+      actions.appendChild(dl);
+
+      var del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'btn btn-ghost btn-sm';
+      del.textContent = 'Hapus';
+      del.setAttribute('aria-label', 'Hapus ' + (d.fileName || 'dokumen'));
+      var armed = false;
+      var armTimer = null;
+      del.addEventListener('click', function () {
+        if (!armed) {
+          armed = true;
+          del.textContent = 'Yakin hapus?';
+          del.classList.remove('btn-ghost');
+          del.classList.add('btn-danger');
+          armTimer = setTimeout(function () {
+            armed = false;
+            del.textContent = 'Hapus';
+            del.classList.add('btn-ghost');
+            del.classList.remove('btn-danger');
+          }, 4000);
+          return;
+        }
+        clearTimeout(armTimer);
+        window.RMStore.removeDoc(d.id);
+        window.RMStore.logActivity('Dokumen dihapus: ' + (d.title || d.fileName));
+        window.RMToast('Dokumen dihapus');
+        render();
+      });
+      actions.appendChild(del);
+
+      li.appendChild(actions);
+      listEl.appendChild(li);
+    });
+  }
+
+  document.getElementById('doc-search').addEventListener('input', function (e) {
+    query = e.target.value;
+    render();
+  });
+  document.querySelectorAll('.filter-chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      document.querySelectorAll('.filter-chip').forEach(function (c) { c.classList.remove('active'); });
+      chip.classList.add('active');
+      filter = chip.getAttribute('data-filter');
+      render();
+    });
+  });
+  document.getElementById('reload-btn').addEventListener('click', function () {
+    render();
+    window.RMToast('Daftar dokumen dimuat ulang');
+  });
+
+  render();
+});
+</script>
+</body>
+</html>
