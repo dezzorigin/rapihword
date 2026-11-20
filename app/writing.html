@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Menulis — RapiMakalah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/app.css">
+<script src="/vendor/jszip.min.js" defer></script>
+<script src="/js/auth.js" defer></script>
+<script src="/js/store.js" defer></script>
+<script src="/js/docx.js" defer></script>
+<script src="/js/app.js" defer></script>
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" aria-label="Navigasi aplikasi">
+    <a class="sidebar-brand" href="/app/index.html"><span class="brand-mark">R</span> RapiMakalah</a>
+    <nav class="sidebar-nav">
+      <span class="nav-label">Menu</span>
+      <a href="/app/index.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg> Dashboard</a>
+      <a href="/app/documents.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg> Dokumen</a>
+      <a href="/app/documents/new.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Dokumen baru</a>
+      <a href="/app/writing.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 0 1 3 3L8 19z"/></svg> Menulis</a>
+      <a href="/app/templates.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg> Template</a>
+      <span class="nav-label">Akun</span>
+      <a href="/app/settings.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg> Pengaturan</a>
+    </nav>
+    <div class="sidebar-foot">RapiMakalah — clone statis.<br>File diproses di browser Anda.</div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <button class="hamburger" id="hamburger-btn" type="button" aria-label="Buka menu navigasi" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <h1>Menulis</h1>
+      <div class="spacer"></div>
+      <button class="btn btn-outline btn-sm" type="button" id="writing-new-btn">Makalah baru</button>
+      <button class="btn btn-outline btn-sm" type="button" id="writing-save-btn">Simpan draft</button>
+      <div class="account-menu">
+        <button class="account-btn" type="button" aria-label="Menu akun" aria-haspopup="true" aria-expanded="false">
+          <span class="avatar" id="account-avatar">R</span>
+          <span class="account-name" id="account-name">Pengguna</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="account-dropdown" id="account-dropdown">
+          <div class="dropdown-mail" id="account-mail"></div>
+          <a href="/app/settings.html">Pengaturan akun</a>
+          <button type="button" id="logout-btn">Keluar</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-content">
+      <div class="page-head">
+        <h2>Menulis</h2>
+        <p>Menulis makalah langsung dari HP, tanpa perlu aplikasi tambahan.</p>
+      </div>
+
+      <div class="editor-wrap">
+        <form id="writing-form" action="#" method="post">
+          <div class="editor">
+            <div class="field">
+              <label for="writing-title">Judul makalah</label>
+              <input type="text" id="writing-title" placeholder="Contoh: Pengaruh Media Sosial terhadap Prestasi Belajar" autocomplete="off">
+            </div>
+            <label for="writing-text" style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">Isi makalah</label>
+            <textarea id="writing-text" placeholder="# Judul Makalah&#10;&#10;## BAB I PENDAHULUAN&#10;&#10;Tulis isi makalah Anda di sini. Gunakan # untuk judul, ## untuk subjudul, 1. atau - untuk list, dan --- untuk page break." aria-label="Isi makalah"></textarea>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+            <button class="btn btn-primary" type="submit" id="writing-download-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 20h16"/></svg> Unduh .docx</button>
+          </div>
+        </form>
+
+        <div>
+          <section class="card format-quick" aria-label="Format cepat">
+            <div class="card-head"><h3>Format Cepat</h3></div>
+            <p style="color:var(--ink-soft);font-size:14px">Aturan ini diterapkan otomatis saat dokumen diunduh.</p>
+            <div class="fq-row"><span>Judul</span><b>14 pt · Tebal</b></div>
+            <div class="fq-row"><span>Subjudul</span><b>12 pt · Tebal</b></div>
+            <div class="fq-row"><span>Isi</span><b>12 pt</b></div>
+            <div class="fq-row"><span>Spasi</span><b>1,5</b></div>
+            <div class="fq-row"><span>Font</span><b>Times New Roman</b></div>
+            <div class="fq-row"><span>Margin</span><b>4/4/3/3 cm</b></div>
+          </section>
+
+          <section class="card" aria-label="Draft tersimpan">
+            <div class="card-head"><h3>Draft tersimpan</h3></div>
+            <ul class="doc-list" id="drafts-list"></ul>
+            <p id="drafts-empty" style="color:var(--ink-soft);font-size:14px;margin:0">Belum ada draft tersimpan.</p>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+  var esc = window.RMApp.esc;
+  var titleEl = document.getElementById('writing-title');
+  var textEl = document.getElementById('writing-text');
+  var currentDraftId = null;
+
+  function renderDrafts() {
+    var drafts = window.RMStore.listDrafts();
+    var listEl = document.getElementById('drafts-list');
+    var emptyEl = document.getElementById('drafts-empty');
+    listEl.innerHTML = '';
+    emptyEl.hidden = drafts.length > 0;
+    drafts.forEach(function (d) {
+      var li = document.createElement('li');
+      li.style.cursor = 'pointer';
+      li.innerHTML =
+        '<span class="doc-icon" aria-hidden="true">DOCX</span>' +
+        '<span class="doc-meta"><span class="doc-title">' + esc(d.title || 'Draft tanpa judul') + '</span>' +
+        '<span class="doc-sub">' + esc(window.RMStore.fmtDate(d.updatedAt)) + '</span></span>';
+      li.addEventListener('click', function () {
+        titleEl.value = d.title || '';
+        textEl.value = d.text || '';
+        currentDraftId = d.id;
+        window.RMToast('Draft dimuat ke editor');
+        titleEl.focus();
+      });
+      var del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'btn btn-ghost btn-sm';
+      del.textContent = 'Hapus';
+      del.setAttribute('aria-label', 'Hapus draft ' + (d.title || 'tanpa judul'));
+      del.addEventListener('click', function (e) {
+        e.stopPropagation();
+        window.RMStore.removeDraft(d.id);
+        if (currentDraftId === d.id) currentDraftId = null;
+        renderDrafts();
+        window.RMToast('Draft dihapus');
+      });
+      li.appendChild(del);
+      listEl.appendChild(li);
+    });
+  }
+
+  document.getElementById('writing-new-btn').addEventListener('click', function () {
+    titleEl.value = '';
+    textEl.value = '';
+    currentDraftId = null;
+    titleEl.focus();
+    window.RMToast('Editor baru siap');
+  });
+
+  document.getElementById('writing-save-btn').addEventListener('click', function () {
+    if (!textEl.value.trim() && !titleEl.value.trim()) {
+      window.RMToast('Tulis sesuatu dulu sebelum menyimpan draft');
+      return;
+    }
+    var draft = window.RMStore.saveDraft({
+      id: currentDraftId || undefined,
+      title: titleEl.value.trim(),
+      text: textEl.value,
+    });
+    currentDraftId = draft.id;
+    renderDrafts();
+    window.RMToast('Draft tersimpan');
+  });
+
+  document.getElementById('writing-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var text = textEl.value;
+    var title = titleEl.value.trim();
+    if (!text.trim()) {
+      window.RMToast('Isi makalah masih kosong');
+      textEl.focus();
+      return;
+    }
+    var fullText = title ? ('# ' + title + '\n\n' + text) : text;
+    window.RMDocx.buildDocxFromText(fullText, { title: title || undefined }).then(function (buf) {
+      var fileName = (title || 'makalah').replace(/[\\/:*?"<>|]/g, '') + '.docx';
+      window.RMDocx.download(buf, fileName);
+      window.RMStore.logActivity('Makalah ditulis dan diunduh: ' + (title || 'tanpa judul'));
+      window.RMToast('Dokumen .docx diunduh');
+    }).catch(function (err) {
+      window.RMToast('Gagal membuat dokumen: ' + (err && err.message ? err.message : 'kesalahan tidak diketahui'));
+    });
+  });
+
+  renderDrafts();
+});
+</script>
+</body>
+</html>

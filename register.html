@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Daftar — RapiMakalah</title>
+  <meta name="description" content="Buat akun RapiMakalah gratis tanpa kartu kredit dan mulai merapikan format makalah Anda.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span>RapiMakalah</span>
+      </a>
+      <div class="topbar-actions">
+        <a class="btn btn-outline btn-sm" href="/login.html">Masuk</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <h1>Buat akun gratis</h1>
+        <p class="auth-sub">Gratis tanpa kartu kredit.</p>
+        <div class="form-alert" role="alert"></div>
+        <form id="register-form" novalidate>
+          <div class="field">
+            <label for="reg-name">Nama lengkap</label>
+            <input type="text" id="reg-name" name="name" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="reg-email">Email</label>
+            <input type="email" id="reg-email" name="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="reg-institution">Institusi</label>
+            <input type="text" id="reg-institution" name="institution" autocomplete="organization" placeholder="Universitas / kampus Anda">
+          </div>
+          <div class="field">
+            <label for="reg-major">Prodi</label>
+            <input type="text" id="reg-major" name="major" placeholder="Program studi Anda">
+          </div>
+          <div class="field">
+            <label for="reg-password">Kata sandi</label>
+            <input type="password" id="reg-password" name="password" autocomplete="new-password" required>
+            <p class="hint">Minimal 8 karakter.</p>
+          </div>
+          <div class="field">
+            <label for="reg-password-confirm">Konfirmasi kata sandi</label>
+            <input type="password" id="reg-password-confirm" name="password-confirm" autocomplete="new-password" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Daftar</button>
+        </form>
+        <p class="auth-alt">Sudah punya akun? <a href="/login.html">Masuk</a></p>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/toast.js"></script>
+  <script src="/js/store.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      var form = document.getElementById('register-form');
+      var alertBox = document.querySelector('.form-alert');
+
+      function showAlert(msg, kind) {
+        alertBox.textContent = msg;
+        alertBox.className = 'form-alert show ' + (kind || 'error');
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = document.getElementById('reg-name').value.trim();
+        var email = document.getElementById('reg-email').value.trim();
+        var institution = document.getElementById('reg-institution').value.trim();
+        var major = document.getElementById('reg-major').value.trim();
+        var password = document.getElementById('reg-password').value;
+        var confirm = document.getElementById('reg-password-confirm').value;
+
+        if (name.length < 2) {
+          showAlert('Nama lengkap minimal 2 karakter.', 'error');
+          return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+          showAlert('Format email tidak valid.', 'error');
+          return;
+        }
+        if (!password || password.length < 8) {
+          showAlert('Kata sandi minimal 8 karakter.', 'error');
+          return;
+        }
+        if (password !== confirm) {
+          showAlert('Konfirmasi kata sandi tidak cocok.', 'error');
+          return;
+        }
+
+        var btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        RMAuth.register({ name: name, email: email, password: password, institution: institution, major: major })
+          .then(function (res) {
+            btn.disabled = false;
+            if (!res.ok) {
+              showAlert(res.error || 'Gagal mendaftar. Coba lagi.', 'error');
+              return;
+            }
+            window.location.href = '/app/';
+          });
+      });
+    })();
+  </script>
+</body>
+</html>

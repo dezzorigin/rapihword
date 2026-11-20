@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Template — RapiMakalah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/app.css">
+<script src="/vendor/jszip.min.js" defer></script>
+<script src="/js/auth.js" defer></script>
+<script src="/js/store.js" defer></script>
+<script src="/js/docx.js" defer></script>
+<script src="/js/app.js" defer></script>
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" aria-label="Navigasi aplikasi">
+    <a class="sidebar-brand" href="/app/index.html"><span class="brand-mark">R</span> RapiMakalah</a>
+    <nav class="sidebar-nav">
+      <span class="nav-label">Menu</span>
+      <a href="/app/index.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg> Dashboard</a>
+      <a href="/app/documents.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg> Dokumen</a>
+      <a href="/app/documents/new.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Dokumen baru</a>
+      <a href="/app/writing.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 0 1 3 3L8 19z"/></svg> Menulis</a>
+      <a href="/app/templates.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg> Template</a>
+      <span class="nav-label">Akun</span>
+      <a href="/app/settings.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg> Pengaturan</a>
+    </nav>
+    <div class="sidebar-foot">RapiMakalah — clone statis.<br>File diproses di browser Anda.</div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <button class="hamburger" id="hamburger-btn" type="button" aria-label="Buka menu navigasi" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <h1>Template</h1>
+      <div class="spacer"></div>
+      <button class="btn btn-outline btn-sm" type="button" id="import-template-btn">Impor template</button>
+      <button class="btn btn-primary btn-sm" type="button" id="custom-template-btn">Template kustom</button>
+      <input type="file" id="import-input" accept=".json,application/json" hidden aria-label="Pilih file JSON template">
+      <div class="account-menu">
+        <button class="account-btn" type="button" aria-label="Menu akun" aria-haspopup="true" aria-expanded="false">
+          <span class="avatar" id="account-avatar">R</span>
+          <span class="account-name" id="account-name">Pengguna</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="account-dropdown" id="account-dropdown">
+          <div class="dropdown-mail" id="account-mail"></div>
+          <a href="/app/settings.html">Pengaturan akun</a>
+          <button type="button" id="logout-btn">Keluar</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-content">
+      <div class="page-head">
+        <h2>Template</h2>
+        <p>Pilih template format untuk dokumen Anda, atau buat template kustom sendiri.</p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Filter template">
+        <button type="button" id="tab-all" class="active" role="tab" aria-selected="true">Semua (<span id="count-all">0</span>)</button>
+        <button type="button" id="tab-builtin" role="tab" aria-selected="false">Bawaan (<span id="count-builtin">0</span>)</button>
+        <button type="button" id="tab-custom" role="tab" aria-selected="false">Template saya (<span id="count-custom">0</span>)</button>
+      </div>
+
+      <div class="toolbar">
+        <div class="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <label for="template-search" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Cari template</label>
+          <input type="search" id="template-search" placeholder="Cari template" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="form-alert error" id="template-error" role="alert"></div>
+
+      <section class="card" id="custom-form-card" hidden aria-label="Buat template kustom" style="margin-bottom:16px">
+        <div class="card-head"><h3>Template kustom</h3></div>
+        <form id="custom-form" action="#" method="post">
+          <div class="field">
+            <label for="custom-name">Nama template</label>
+            <input type="text" id="custom-name" placeholder="Contoh: Makalah Kampus A" required autocomplete="off">
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+            <div class="field"><label for="custom-m-top">Margin atas (cm)</label><input type="number" id="custom-m-top" value="4" min="0" max="10" step="0.5" required></div>
+            <div class="field"><label for="custom-m-left">Margin kiri (cm)</label><input type="number" id="custom-m-left" value="4" min="0" max="10" step="0.5" required></div>
+            <div class="field"><label for="custom-m-bottom">Margin bawah (cm)</label><input type="number" id="custom-m-bottom" value="3" min="0" max="10" step="0.5" required></div>
+            <div class="field"><label for="custom-m-right">Margin kanan (cm)</label><input type="number" id="custom-m-right" value="3" min="0" max="10" step="0.5" required></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+            <div class="field"><label for="custom-font">Font</label><input type="text" id="custom-font" value="Times New Roman" required></div>
+            <div class="field"><label for="custom-size">Ukuran (pt)</label><input type="number" id="custom-size" value="12" min="8" max="18" step="0.5" required></div>
+            <div class="field"><label for="custom-spacing">Spasi baris</label><input type="number" id="custom-spacing" value="1.5" min="1" max="3" step="0.1" required></div>
+          </div>
+          <div class="field">
+            <label for="custom-numbering">Penomoran halaman</label>
+            <input type="text" id="custom-numbering" value="Romawi → Arab">
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-primary" type="submit">Simpan template</button>
+            <button class="btn btn-outline" type="button" id="custom-cancel-btn">Batal</button>
+          </div>
+        </form>
+      </section>
+
+      <div class="template-grid" id="template-grid"></div>
+      <div class="empty-state" id="templates-empty" hidden>
+        <h3>Tidak ada template yang cocok</h3>
+        <p>Coba kata kunci lain atau buat template kustom.</p>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+  var esc = window.RMApp.esc;
+  var filter = 'semua';
+  var query = '';
+  var grid = document.getElementById('template-grid');
+  var emptyEl = document.getElementById('templates-empty');
+
+  function marginText(t) {
+    var m = t.marginCm || {};
+    return 'Margin ' + (m.top != null ? m.top : '—') + '/' + (m.left != null ? m.left : '—') +
+      '/' + (m.bottom != null ? m.bottom : '—') + '/' + (m.right != null ? m.right : '—') + ' cm';
+  }
+  function fmtSpacing(v) {
+    return String(v).replace('.', ',');
+  }
+
+  function render() {
+    var all = window.RMStore.listTemplates();
+    var builtin = all.filter(function (t) { return t.builtin; });
+    var custom = all.filter(function (t) { return !t.builtin; });
+    document.getElementById('count-all').textContent = all.length;
+    document.getElementById('count-builtin').textContent = builtin.length;
+    document.getElementById('count-custom').textContent = custom.length;
+
+    var shown = all.filter(function (t) {
+      if (filter === 'bawaan' && !t.builtin) return false;
+      if (filter === 'saya' && t.builtin) return false;
+      if (query && t.name.toLowerCase().indexOf(query) < 0) return false;
+      return true;
+    });
+    grid.innerHTML = '';
+    emptyEl.hidden = shown.length > 0;
+    shown.forEach(function (t) {
+      var card = document.createElement('article');
+      card.className = 'card template-card';
+      card.innerHTML =
+        '<h3>' + esc(t.name) + (t.builtin ? ' <span class="template-badge">Bawaan</span>' : '') + '</h3>' +
+        '<div class="template-meta">' +
+        '<span class="chip">Kertas ' + esc(t.paper || 'A4') + '</span>' +
+        '<span class="chip">' + esc(marginText(t)) + '</span>' +
+        '<span class="chip">' + esc(t.font || '') + '</span>' +
+        '<span class="chip">' + esc(t.sizePt) + ' pt</span>' +
+        '<span class="chip">Spasi ' + esc(fmtSpacing(t.lineSpacing)) + '</span>' +
+        '<span class="chip">Penomoran ' + esc(t.numbering || '') + '</span>' +
+        '</div>' +
+        '<div class="template-actions">' +
+        '<button class="btn btn-primary btn-sm" type="button" data-act="use">Pakai</button>' +
+        '<button class="btn btn-outline btn-sm" type="button" data-act="dup">Duplikat</button>' +
+        (t.builtin ? '' : '<button class="btn btn-ghost btn-sm" type="button" data-act="del">Hapus</button>') +
+        '</div>';
+      card.querySelector('[data-act="use"]').addEventListener('click', function () {
+        try { sessionStorage.setItem('rm-template-id', t.id); } catch (e) {}
+        window.location.href = '/app/documents/new.html';
+      });
+      card.querySelector('[data-act="dup"]').addEventListener('click', function () {
+        window.RMStore.duplicateTemplate(t.id);
+        window.RMToast('Template diduplikat: ' + t.name + ' (salinan)');
+        render();
+      });
+      var delBtn = card.querySelector('[data-act="del"]');
+      if (delBtn) {
+        delBtn.addEventListener('click', function () {
+          if (delBtn.dataset.armed) {
+            window.RMStore.removeTemplate(t.id);
+            window.RMToast('Template dihapus');
+            render();
+            return;
+          }
+          delBtn.dataset.armed = '1';
+          delBtn.textContent = 'Yakin hapus?';
+          setTimeout(function () {
+            if (delBtn.isConnected) { delete delBtn.dataset.armed; delBtn.textContent = 'Hapus'; }
+          }, 4000);
+        });
+      }
+      grid.appendChild(card);
+    });
+  }
+
+  function setTab(which) {
+    filter = which;
+    ['all', 'builtin', 'custom'].forEach(function (k) {
+      var b = document.getElementById('tab-' + k);
+      var active = (k === 'all' && which === 'semua') || (k === 'builtin' && which === 'bawaan') || (k === 'custom' && which === 'saya');
+      b.classList.toggle('active', active);
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    render();
+  }
+  document.getElementById('tab-all').addEventListener('click', function () { setTab('semua'); });
+  document.getElementById('tab-builtin').addEventListener('click', function () { setTab('bawaan'); });
+  document.getElementById('tab-custom').addEventListener('click', function () { setTab('saya'); });
+  document.getElementById('template-search').addEventListener('input', function (e) {
+    query = e.target.value.trim().toLowerCase();
+    render();
+  });
+
+  /* ---- Template kustom (form inline) ---- */
+  var customCard = document.getElementById('custom-form-card');
+  document.getElementById('custom-template-btn').addEventListener('click', function () {
+    customCard.hidden = !customCard.hidden;
+    if (!customCard.hidden) document.getElementById('custom-name').focus();
+  });
+  document.getElementById('custom-cancel-btn').addEventListener('click', function () {
+    customCard.hidden = true;
+  });
+  document.getElementById('custom-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = document.getElementById('custom-name').value.trim();
+    if (name.length < 2) { window.RMToast('Nama template minimal 2 karakter'); return; }
+    window.RMStore.addTemplate({
+      name: name,
+      paper: 'A4',
+      marginCm: {
+        top: Number(document.getElementById('custom-m-top').value),
+        left: Number(document.getElementById('custom-m-left').value),
+        bottom: Number(document.getElementById('custom-m-bottom').value),
+        right: Number(document.getElementById('custom-m-right').value),
+      },
+      font: document.getElementById('custom-font').value.trim() || 'Times New Roman',
+      sizePt: Number(document.getElementById('custom-size').value) || 12,
+      lineSpacing: Number(document.getElementById('custom-spacing').value) || 1.5,
+      numbering: document.getElementById('custom-numbering').value.trim() || 'Romawi → Arab',
+      toc: true,
+    });
+    customCard.hidden = true;
+    e.target.reset();
+    document.getElementById('custom-m-top').value = 4;
+    document.getElementById('custom-m-left').value = 4;
+    document.getElementById('custom-m-bottom').value = 3;
+    document.getElementById('custom-m-right').value = 3;
+    document.getElementById('custom-font').value = 'Times New Roman';
+    document.getElementById('custom-size').value = 12;
+    document.getElementById('custom-spacing').value = 1.5;
+    document.getElementById('custom-numbering').value = 'Romawi → Arab';
+    window.RMToast('Template kustom disimpan');
+    render();
+  });
+
+  /* ---- Impor template (JSON) ---- */
+  var importInput = document.getElementById('import-input');
+  document.getElementById('import-template-btn').addEventListener('click', function () {
+    importInput.click();
+  });
+  importInput.addEventListener('change', function () {
+    var file = importInput.files && importInput.files[0];
+    if (!file) return;
+    var errEl = document.getElementById('template-error');
+    errEl.classList.remove('show');
+    file.text().then(function (text) {
+      var data = JSON.parse(text);
+      if (!data || typeof data.name !== 'string' || data.name.trim().length < 2) {
+        throw new Error('File JSON harus berisi template dengan "name" minimal 2 karakter.');
+      }
+      var m = data.marginCm || {};
+      ['top', 'left', 'bottom', 'right'].forEach(function (k) {
+        if (typeof m[k] !== 'number' || m[k] < 0 || m[k] > 10) {
+          throw new Error('marginCm harus berisi angka top/left/bottom/right (0–10 cm).');
+        }
+      });
+      if (typeof data.sizePt !== 'number' || typeof data.lineSpacing !== 'number') {
+        throw new Error('Template harus berisi sizePt dan lineSpacing berupa angka.');
+      }
+      window.RMStore.addTemplate({
+        name: data.name.trim(),
+        paper: 'A4',
+        marginCm: { top: m.top, left: m.left, bottom: m.bottom, right: m.right },
+        font: typeof data.font === 'string' && data.font ? data.font : 'Times New Roman',
+        sizePt: data.sizePt,
+        lineSpacing: data.lineSpacing,
+        numbering: typeof data.numbering === 'string' && data.numbering ? data.numbering : 'Romawi → Arab',
+        toc: true,
+      });
+      window.RMToast('Template diimpor: ' + data.name.trim());
+      render();
+    }).catch(function (err) {
+      errEl.textContent = 'Gagal mengimpor template: ' + (err && err.message ? err.message : 'file tidak valid');
+      errEl.classList.add('show');
+    }).finally(function () { importInput.value = ''; });
+  });
+
+  render();
+});
+</script>
+</body>
+</html>
