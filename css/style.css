@@ -1,4 +1,4 @@
-/* RapiMakalah — stylesheet publik + shared.
+/* RapihWord — stylesheet publik + shared.
    Palet dari situs asli (slate + biru solid #2563EB). Tanpa gradient,
    tanpa Inter/Roboto, tanpa rounded-2xl/shadow-lg (gate P0). */
 :root {
@@ -370,6 +370,7 @@ input, select, textarea { font-family: inherit; font-size: 15px; }
   h2 { font-size: 25px; }
   .section { padding: 48px 0; }
   .topnav { display: none; }
+  .topbar-actions .btn-ghost { display: none; } /* mobile: cukup satu CTA (Mulai Gratis) */
   .hero { padding: 48px 0; }
   .hero h1 { font-size: 32px; }
   .problems, .features, .guides { grid-template-columns: 1fr; }

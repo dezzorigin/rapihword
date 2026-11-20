@@ -1,13 +1,13 @@
-# DESIGN.md — RapiMakalah (clone rapimakalah.my.id)
+# DESIGN.md — RapihWord (clone situs sumber)
 
 ## Referensi
-- **Sumber utama: situs live rapimakalah.my.id** (diobservasi 20 Nov 2026 via
+- **Sumber utama: situs live yang diklon** (diobservasi 20 Nov 2026 via
   fetch teks + CSS bundle `/assets/index-DMEJk6Ty.css`): SPA React, palet
   slate + biru solid `#2563EB`, font Inter + JetBrains Mono, hero "Rapikan
   format makalah tanpa mengorbankan isinya.", kartu preview dokumen dengan
   chip temuan "Spasi baris 1,0 · seharusnya 1,5", alur 4 langkah, panduan
   4 kartu, CTA akhir.
-- **Peta interior** `~/workspace/rapimakalah-clone/map.md` (19 Nov 2026,
+- **Peta interior** `~/workspace/rapihword-clone/map.md` (19 Nov 2026,
   via browser, akun kosong): route publik + app, copy asli, inkonsistensi
   margin template (teks 4-3-3-3 vs chip 3/3/3/4).
 - **DRIFT CATATAN:** landing live 20 Nov SUDAH BERUBAH dari peta 19 Nov

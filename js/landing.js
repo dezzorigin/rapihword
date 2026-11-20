@@ -1,4 +1,4 @@
-/* RapiMakalah — interaksi landing publik:
+/* RapihWord — interaksi landing publik:
    accordion FAQ, kartu panduan yang mengembang, popup WhatsApp. */
 (function () {
   'use strict';

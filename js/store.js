@@ -1,4 +1,4 @@
-/* RapiMakalah — penyimpanan demo lokal (localStorage + blob di memori).
+/* RapihWord — penyimpanan demo lokal (localStorage + blob di memori).
    Metadata dokumen/template/aktivitas tersimpan di localStorage; isi file
    (.docx asli + hasil) hanya dipegang di memori tab (tidak muat di
    localStorage untuk file besar) — unduh hasil sebelum menutup tab. */

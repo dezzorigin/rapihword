@@ -34,7 +34,7 @@ const srv = spawn(process.execPath, ['scripts/serve.mjs'], {
 });
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-const tmp = mkdtempSync(join(tmpdir(), 'rapimakalah-smoke-'));
+const tmp = mkdtempSync(join(tmpdir(), 'rapihword-smoke-'));
 
 async function check(path, needle, label) {
   const out = join(tmp, label.replace(/\W+/g, '_') + '.html');
@@ -45,10 +45,10 @@ async function check(path, needle, label) {
 
 try {
   await wait(1500);
-  await check('/', 'RapiMakalah', 'judul-landing');
+  await check('/', 'RapihWord', 'judul-landing');
   await check('/', 'Rapikan format makalah tanpa mengorbankan isinya', 'hero-landing');
   await check('/', 'og-image.png', 'og-image');
-  await check('/login.html', 'Masuk ke RapiMakalah', 'judul-login');
+  await check('/login.html', 'Masuk ke RapihWord', 'judul-login');
   await check('/register.html', 'Buat akun gratis', 'judul-register');
   await check('/forgot-password.html', 'Atur ulang kata sandi', 'judul-forgot');
   await check('/app/', 'Dashboard', 'judul-dashboard');

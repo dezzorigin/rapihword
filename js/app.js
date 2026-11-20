@@ -1,11 +1,11 @@
-/* RapiMakalah — shell bersama halaman /app/*.
-   Guard auth, menu akun, sidebar aktif, hamburger mobile, toast.
+/* RapihWord — shell bersama halaman /app/*.
+   Login DIMATIKAN (20 Nov 2026): app terbuka tanpa sesi, tidak ada
+   guard yang me-redirect ke /login.html. Halaman login/register tetap
+   ada di repo tapi bukan gerbang.
+   Menu akun, sidebar aktif, hamburger mobile, toast.
    Bergantung pada: js/auth.js (window.RMAuth). Tanpa backend. */
 (function () {
   'use strict';
-
-  var params = new URLSearchParams(window.location.search);
-  var NOP = params.get('nop') === '1';
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -58,14 +58,10 @@
     catch (e) { return null; }
   }
 
-  /* Guard: redirect ke /login.html bila belum login.
-     ?nop=1 melewati guard (pengujian / verifikasi tanpa sesi). */
+  /* Guard login DIMATIKAN (20 Nov 2026): app terbuka tanpa sesi.
+     Fungsi dipertahankan sebagai no-op agar pemanggil lama (RMApp.guard)
+     tidak pecah; selalu lolos. */
   function guard() {
-    if (NOP) return true;
-    if (!currentUser()) {
-      window.location.href = '/login.html';
-      return false;
-    }
     return true;
   }
 
@@ -103,8 +99,10 @@
       });
     }
 
-    /* Keluar (di dropdown). */
+    /* Keluar (di dropdown) — hanya tampil bila ada sesi (akun demo lama).
+       Tanpa sesi tombol disembunyikan: tidak ada yang perlu di-logout. */
     var logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn && !user) logoutBtn.style.display = 'none';
     if (logoutBtn) {
       logoutBtn.addEventListener('click', function () {
         if (window.RMAuth) window.RMAuth.logout();
@@ -142,10 +140,7 @@
     }
   }
 
-  /* Guard jalan segera (sebelum DOMContentLoaded) supaya halaman
-     terlindungi tidak sempat berkedip. */
-  guard();
-
+  /* Tanpa guard: halaman /app/* langsung tampil apa adanya. */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {

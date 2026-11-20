@@ -1,9 +1,24 @@
-# CHANGELOG — RapiMakalah
+# CHANGELOG — RapihWord
 
 ## [Unreleased]
 
+### Changed
+- Login DIMATIKAN (20 Nov 2026): app `/app/*` langsung terbuka tanpa
+  sesi — guard auth di `js/app.js`/`js/auth.js` jadi no-op, tombol
+  "Keluar" disembunyikan bila tidak ada sesi. Semua CTA landing
+  ("Mulai Gratis", "Buka App") mengarah langsung ke `/app/`.
+  Halaman `login.html`/`register.html`/`forgot-password.html` tetap ada
+  di repo tapi bukan gerbang. E2E diperbarui: tes guard-login diganti
+  tes dashboard-langsung-tampil + klik CTA; tes halaman auth lama tetap
+  ada.
+- Rebrand total → **RapihWord** (repo `dezzorigin/rapihword`,
+  `rapihword.pages.dev`). Semua copy user-visible, OG tag, dan metadata
+  DOCX memakai nama baru; atribusi sumber tetap ada di README.
+- Perbaikan kecil: script `npm run screenshots` kini menunjuk
+  `scripts/screenshots.mjs` (sebelumnya `screenshot.mjs`, file tidak ada).
+
 ### Added
-- Clone statis rapimakalah.my.id (tanpa backend): landing, login, register,
+- Clone statis (tanpa backend): landing, login, register,
   forgot-password, dan aplikasi /app (dashboard, dokumen, dokumen baru,
   menulis, template, pengaturan).
 - Auth demo lokal via localStorage (daftar/masuk/keluar, ubah password,
