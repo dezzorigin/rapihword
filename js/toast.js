@@ -1,4 +1,4 @@
-/* RapiMakalah — toast helper (dipakai semua halaman publik).
+/* RapihWord — toast helper (dipakai semua halaman publik).
    Menampilkan pesan singkat di .toast-wrap; tidak menduplikasi
    wadah maupun helper bila sudah ada. */
 (function () {

@@ -1,6 +1,8 @@
-// e2e RapiMakalah — alur nyata: auth demo, upload DOCX -> analisis ->
-// format -> unduh (hasil diverifikasi isi OOXML-nya), tempel teks,
-// menulis, template, pengaturan. Desktop + mobile.
+// e2e RapihWord — login DIMATIKAN (20 Nov 2026): app /app/* terbuka tanpa
+// sesi. Alur nyata: upload DOCX -> analisis -> format -> unduh (hasil
+// diverifikasi isi OOXML-nya), tempel teks, menulis, template, pengaturan.
+// Halaman login/register/lupa-password tetap dites sebagai halaman lama
+// (bukan gerbang). Desktop + mobile.
 import { test, expect } from '@playwright/test';
 import JSZip from 'jszip';
 import { readFileSync } from 'node:fs';
@@ -19,7 +21,9 @@ async function readDocxXml(download) {
   };
 }
 
-async function seedLogin(page) {
+// Daftarkan akun demo (dipakai HANYA oleh tes yang butuh sesi, mis.
+// pengaturan profil/password). App sendiri tidak butuh login.
+async function seedUser(page) {
   await page.goto('/login.html');
   await page.evaluate(async () => {
     await window.RMAuth.register({
@@ -27,6 +31,9 @@ async function seedLogin(page) {
       institution: 'Universitas Contoh', major: 'Informatika',
     });
   });
+}
+
+async function openApp(page) {
   await page.goto('/app/');
   await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
 }
@@ -70,7 +77,7 @@ test.describe('landing publik', () => {
   });
 });
 
-test.describe('auth demo', () => {
+test.describe('auth demo (halaman lama, bukan gerbang)', () => {
   test('daftar lalu masuk lalu keluar', async ({ page }) => {
     await page.goto('/register.html');
     await page.locator('#reg-name').fill('Uji Coba');
@@ -123,14 +130,23 @@ test.describe('auth demo', () => {
     await expect(page).toHaveURL(/\/app\//);
   });
 
-  test('halaman /app tanpa login mengarah ke login', async ({ page }) => {
+  test('halaman /app tanpa login langsung tampil dashboard', async ({ page }) => {
     await page.goto('/app/');
-    await expect(page).toHaveURL(/login\.html/);
+    await expect(page).toHaveURL(/\/app\//);
+    await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+    await expect(page.locator('#stat-total')).toBeVisible();
+  });
+
+  test('CTA landing "Mulai Gratis" langsung ke /app/ tanpa login', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('.hero-ctas a', { hasText: 'Mulai Gratis' }).click();
+    await expect(page).toHaveURL(/\/app\//);
+    await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
   });
 });
 
 test.describe('dokumen: upload -> analisis -> format -> unduh', () => {
-  test.beforeEach(async ({ page }) => { await seedLogin(page); });
+  test.beforeEach(async ({ page }) => { await openApp(page); });
 
   test('upload DOCX berantakan: temuan tampil, format diterapkan, hasil bisa diunduh', async ({ page }) => {
     await page.goto('/app/documents/new.html');
@@ -192,7 +208,7 @@ test.describe('dokumen: upload -> analisis -> format -> unduh', () => {
 });
 
 test.describe('menulis, template, pengaturan', () => {
-  test.beforeEach(async ({ page }) => { await seedLogin(page); });
+  test.beforeEach(async ({ page }) => { await openApp(page); });
 
   test('menulis: ketik lalu unduh .docx', async ({ page }) => {
     await page.goto('/app/writing.html');
@@ -217,6 +233,7 @@ test.describe('menulis, template, pengaturan', () => {
   });
 
   test('pengaturan: ubah profil dan ubah password', async ({ page }) => {
+    await seedUser(page);
     await page.goto('/app/settings.html');
     await page.locator('#profile-name').fill('Uji Coba Baru');
     await page.locator('#profile-save-btn').click();

@@ -44,5 +44,5 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, '127.0.0.1', () => {
-  console.log(`rapimakalah serve: http://127.0.0.1:${PORT}/`);
+  console.log(`rapihword serve: http://127.0.0.1:${PORT}/`);
 });

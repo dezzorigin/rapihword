@@ -1,6 +1,6 @@
 name: CI
 
-# CI untuk RapiMakalah — situs statis (landing + app), tanpa dependensi
+# CI untuk RapihWord — situs statis (landing + app), tanpa dependensi
 # produksi; JSZip di-vendor ke /vendor (bukan CDN) agar deploy Pages mandiri.
 # Job: pemeriksaan statis (tautan + secret + gate anti-slop P0),
 # advisory-sweep OSV (produksi saja — di repo ini nol paket produksi),

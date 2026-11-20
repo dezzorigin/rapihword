@@ -1,4 +1,4 @@
-# RapiMakalah — clone statis
+# RapihWord — clone statis
 
 Clone dari [rapimakalah.my.id](https://rapimakalah.my.id/): merapikan format makalah
 dan skripsi Word (`.docx`) secara otomatis — margin, font, spasi, heading BAB,
@@ -6,16 +6,20 @@ penomoran halaman Romawi → Arab, daftar isi, cover — langsung di browser,
 tanpa backend dan tanpa file keluar dari perangkat Anda.
 
 > **Status:** clone statis (HTML/CSS/JS murni, deploy Cloudflare Pages).
-> Auth adalah **demo lokal** (localStorage, tanpa server). Mesin format DOCX-nya
-> **nyata, bukan mock**: unggah `.docx` berantakan → analisis per seksi →
-> terapkan format → unduh `.docx` hasil yang sudah rapi.
+> **Login dimatikan** (20 Nov 2026): app `/app/*` langsung terbuka tanpa
+> akun — semua CTA landing mengarah ke `/app/`. Halaman login/register/
+> lupa-password tetap ada di repo tapi bukan gerbang; auth demo-nya
+> (localStorage, tanpa server) masih jalan bila halaman itu dibuka
+> langsung. Mesin format DOCX-nya **nyata, bukan mock**: unggah `.docx`
+> berantakan → analisis per seksi → terapkan format → unduh `.docx`
+> hasil yang sudah rapi.
 
 ## Video demo
 
-[![Video demo — walkthrough RapiMakalah (16 detik)](docs/screenshots/landing-desktop.png)](docs/demo.mp4)
+[![Video demo — walkthrough RapihWord (16 detik)](docs/screenshots/landing-desktop.png)](docs/demo.mp4)
 
 Klik gambar di atas untuk memutar video demo (MP4, 16 detik, 524 KB):
-landing → daftar → dashboard → unggah `.docx` → analisis 6 temuan →
+landing → dashboard → unggah `.docx` → analisis 6 temuan →
 terapkan format → unduh hasil.
 
 ## Tampilan
@@ -48,8 +52,8 @@ npm install   # sekali saja (devDependencies: playwright + jszip)
 npm run serve # http://127.0.0.1:8331
 ```
 
-Tidak ada build step. Buka `http://127.0.0.1:8331/` dan daftar akun demo
-(akun tersimpan di localStorage browser Anda saja).
+Tidak ada build step. Buka `http://127.0.0.1:8331/` — app langsung
+terbuka tanpa login.
 
 ```bash
 npm run validate  # check-links + check-static (P0 anti-slop)
@@ -104,9 +108,10 @@ DESIGN.md       kontrak desain (palet, tipografi, detail khas)
   localStorage; tombol Unduh di daftar dokumen nonaktif bila tab sudah
   ditutup/dibuka ulang — unduh hasil langsung setelah format diterapkan.
 - **Auth demo, bukan produksi.** Password hanya disimpan sebagai hash SHA-256
-  di localStorage Anda; tidak ada server, tidak ada login Google, tidak ada
-  kirim email. Kode reset password 6 digit ditampilkan di layar (demo, tanpa
-  mail server), berlaku 15 menit.
+  di localStorage Anda; tidak ada server, tidak ada login Google. Login
+  wajib dimatikan (20 Nov 2026) — app `/app/*` terbuka tanpa akun.
+  Kode reset password 6 digit ditampilkan di layar (demo, tanpa mail
+  server), berlaku 15 menit.
 - **File tidak pernah diunggah ke mana pun.** Semua pemrosesan terjadi di
   browser Anda (JSZip + DOMParser lokal).
 - **Perbedaan dari aslinya (per 20 Nov 2026):**

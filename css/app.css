@@ -1,4 +1,4 @@
-/* RapiMakalah — shell aplikasi (/app/*). */
+/* RapihWord — shell aplikasi (/app/*). */
 .app-layout { display: flex; min-height: 100vh; background: var(--desk); }
 .sidebar {
   width: 248px; flex: none; background: var(--paper);

@@ -1,4 +1,4 @@
-/* RapiMakalah — mesin format DOCX (berjalan penuh di browser).
+/* RapihWord — mesin format DOCX (berjalan penuh di browser).
    Memakai JSZip (vendored) + DOMParser untuk memodifikasi OOXML asli:
    file .docx pengguna TIDAK dibangun ulang — document.xml-nya diubah
    langsung, isi/tabel/gambar/hyperlink dipertahankan.
@@ -738,10 +738,10 @@
     zip.file('word/footer2.xml', buildFooterXml());
     zip.file('docProps/core.xml',
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
-      '<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:creator>RapiMakalah</dc:creator><dc:title>Dokumen RapiMakalah</dc:title></cp:coreProperties>');
+      '<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:creator>RapihWord</dc:creator><dc:title>Dokumen RapihWord</dc:title></cp:coreProperties>');
     zip.file('docProps/app.xml',
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
-      '<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"><Application>RapiMakalah</Application></Properties>');
+      '<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"><Application>RapihWord</Application></Properties>');
     zip.file('word/document.xml', serialize(doc));
     return zip;
   }

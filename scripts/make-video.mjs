@@ -21,15 +21,8 @@ await page.waitForTimeout(1200);
 await page.goto(BASE + '/');
 await page.waitForTimeout(800);
 
-// 2. Daftar (UI asli) -> dashboard
-await page.goto(BASE + '/register.html');
-await page.waitForTimeout(600);
-await page.locator('#reg-name').fill('Uji Coba');
-await page.locator('#reg-email').fill('uji@contoh.id');
-await page.locator('#reg-password').fill('password123');
-await page.locator('#reg-password-confirm').fill('password123');
-await page.waitForTimeout(400);
-await page.locator('button[type="submit"]').click();
+// 2. App langsung (login dimatikan 20 Nov 2026): klik "Mulai Gratis" di hero
+await page.locator('.hero-ctas a', { hasText: 'Mulai Gratis' }).click();
 await page.waitForURL(/\/app\//);
 await page.waitForTimeout(1200);
 
@@ -46,7 +39,7 @@ const [download] = await Promise.all([
   page.locator('#apply-format-btn').click(),
 ]);
 await page.waitForTimeout(1500);
-await download.saveAs('/tmp/rapimakalah-demo-download.docx');
+await download.saveAs('/tmp/rapihword-demo-download.docx');
 
 // 4. Daftar dokumen: hasil muncul sebagai "Siap diunduh"
 await page.goto(BASE + '/app/documents.html');

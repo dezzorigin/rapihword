@@ -1,4 +1,7 @@
-/* RapiMakalah — auth demo lokal (localStorage).
+/* RapihWord — auth demo lokal (localStorage).
+   LOGIN DIMATIKAN sebagai gerbang (20 Nov 2026): app /app/* terbuka
+   tanpa sesi. Halaman login/register/lupa-password tetap ada dan fungsinya
+   masih jalan bila dibuka langsung, tapi tidak dipakai sebagai gerbang.
    TIDAK ADA password asli siapa pun di sini. Akun demo disimpan di
    browser pengguna sendiri; kata sandi hanya disimpan sebagai hash
    SHA-256, tidak pernah plaintext. Bukan auth produksi. */
@@ -64,7 +67,7 @@
       users.push(user);
       saveUsers(users);
       localStorage.setItem(SESSION_KEY, JSON.stringify({ email }));
-      if (window.RMStore) RMStore.logActivity('Akun RapiMakalah dibuat');
+      if (window.RMStore) RMStore.logActivity('Akun RapihWord dibuat');
       return { ok: true, user: { name: user.name, email: user.email } };
     },
 
@@ -80,15 +83,15 @@
     },
 
     async loginDemo() {
-      const email = 'demo@rapimakalah.demo';
+      const email = 'demo@rapihword.demo';
       let user = loadUsers().find(u => u.email === email);
       if (!user) {
         user = {
           name: 'Pengguna Demo', email, institution: 'Universitas Contoh', major: 'Informatika',
-          joinedAt: new Date().toISOString(), passHash: await sha256('demo-rapimakalah'),
+          joinedAt: new Date().toISOString(), passHash: await sha256('demo-rapihword'),
         };
         const users = loadUsers(); users.push(user); saveUsers(users);
-        if (window.RMStore) RMStore.logActivity('Akun RapiMakalah dibuat');
+        if (window.RMStore) RMStore.logActivity('Akun RapihWord dibuat');
       }
       localStorage.setItem(SESSION_KEY, JSON.stringify({ email }));
       return { ok: true, user: { name: user.name, email: user.email } };
@@ -97,10 +100,7 @@
     logout() { localStorage.removeItem(SESSION_KEY); },
 
     requireAuth() {
-      if (!this.current()) {
-        window.location.href = '/login.html';
-        return false;
-      }
+      // Login dimatikan (20 Nov 2026): bukan gerbang lagi. Selalu lolos.
       return true;
     },
 
